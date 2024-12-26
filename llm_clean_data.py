@@ -120,8 +120,7 @@ def main():
         else:
             raise ValueError("Unsupported file format. Please use CSV or Excel files.")
         
-        # Specify columns to check for placeholders
-        # You can modify this list based on your data
+        # Specify columns
         columns_to_check = args.columns if args.columns else df.select_dtypes(include=['object']).columns.tolist()
         
         print(f"Analyzing {len(columns_to_check)} string columns for placeholders...")
@@ -134,15 +133,13 @@ def main():
         # Clean the dataframe
         df_clean = clean_dataframe(df, placeholder_strings, columns_to_check)
         
-        # Print some statistics about the cleaning
+        # Check cleaning
         for col in columns_to_check:
-            # Check for remaining placeholders and count NaN values
             remaining_placeholders = df_clean[col].isin(placeholder_strings).sum()
-            # missing_after = df_clean[col].isna().sum()
             print(f"\nColumn: {col}")
             print(f"Remaining placeholders: {remaining_placeholders}")
         
-        # Optionally save the cleaned dataframe
+        # Save the cleaned dataframe
         os.makedirs(args.output_dir, exist_ok=True)
         output_path = os.path.join(args.output_dir, os.path.basename(file_path.rsplit('.', 1)[0]) + '_cleaned.' + file_path.rsplit('.', 1)[1])
         if file_path.endswith('.csv'):
