@@ -48,25 +48,38 @@ def identify_placeholder_strings(df, columns_to_check):
                 'numeric_examples': numeric_counts.to_dict(),
                 'non_numeric_values': non_numeric_counts.to_dict()
             }
-    print(value_counts)
     
     prompt = """
-    Analyze these columns and their value frequencies. Each column shows:
-    - 'numeric_examples': A sample of the normal numeric values in the column
+    ## Task:
+    Analyze these columns and their unique value counts. Each column has:
+    - 'numeric_examples': A sample of the normal numeric values in the column (may be empty for only categorical columns)
     - 'non_numeric_values': All non-numeric values found in the column
     
     Identify ONLY placeholder strings that represent missing data or invalid measurements.
-    Examples of what to include: 'N/A', 'missing', 'nan', 'M_OTHER', '-', 'Unknown','not_answered','BLOD'
-    Examples of what NOT to include: valid categorical values (like 'Male'/'Female'), normal numeric numbers if applicable
+
+    ## Rules for Identification:
+    Examples of what to include:
+    - Missing data indicators (e.g., 'N/A', 'missing', 'nan','M_OTHER')
+    - Invalid measurement markers (e.g., 'BLOD', '-')
+    - Unknown/undefined values (e.g., 'Unknown', 'not_answered')
+
+    Examples of what to exclude:
+    - Valid categorical values (e.g., 'Male'/'Female')
+    - Normal numeric values
     
-    Return only a Python list of strings that are placeholder values.
+    ## Special Considerations
+    1. Numeric columns: If a column has numeric values, then most non-numeric values in the columnare likely placeholders
+    2. Categorical columns: Consider all categorical values and decide if they are valid or placeholders for the column values
+       - Focus on common missing data patterns
+       - Consider the column name and context
+    
+    ## Output Format
+    Return a Python list of strings containing only the identified placeholder values.
     Include case variations if present.
-    
-    Important: Use the numeric examples to understand what normal values look like in each column. If a column has numeric examples, it is likely that most of the associated non-numeric string values are noise/placeholders for missing values which should be included in the list to remove.
     """
     
     model = genai.GenerativeModel('gemini-pro')
-    response = model.generate_content(f"{prompt}\n\nColumn frequencies:\n{value_counts}")
+    response = model.generate_content(f"{prompt}\n\nColumn value counts:\n{value_counts}")
     print("Response: \n", response.text)
     return eval(response.text)
 
