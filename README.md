@@ -29,6 +29,12 @@ Example:
 python llm_clean_data.py ./tests/data/ondri_beam_biomarkers.xlsx --columns SEX MOCA_TOTAL AB40 AB42 PTAU181 --output_dir ./tests/cleaned_outputs
 ```
 
+Example output:
+```
+Identified placeholder strings:
+['MISSING', 'nan', 'M_OTHER', 'M_PI', 'BLOD']
+```
+
 This command will analyze the specified columns in the `ondri_beam_biomarkers.xlsx` file and save the cleaned data to the `cleaned_outputs` directory.
 Specifying columns is preferred, in order to optimize the Gemini API call and reduce token usage. Otherwise, all columns will be analyzed.
 
