@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "llm-clean-data"
+version = "0.1.0"
+description = ""
+authors = ["Karissa Chan <84393649+KarissaChan1@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^8.3.3"
+google-generativeai = "^0.8.4"
+pandas = "^2.2.3"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.scripts]
+llm_clean_data = "llm_clean_data.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

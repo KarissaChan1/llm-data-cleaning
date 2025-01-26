@@ -4,9 +4,11 @@ This tool uses Google's Gemini AI to automatically identify and clean placeholde
 
 ## Installation
 
-1. Install required packages:
+1. Install required packages and activate virtual environment using Poetry:
 ```
-pip install -r requirements.txt
+poetry env use 3.10.11 (Python 3.10.11 is recommended)
+poetry install
+poetry shell
 ```
 
 2. Set up your Google API key:
@@ -21,15 +23,15 @@ pip install -r requirements.txt
 
 Basic command structure:
 ```
-python llm_clean_data.py <file_path> [--columns <column_name>] [--output_dir <output_directory>]
+llm_clean_data <file_path> [--columns <column_name>] [--output_dir <output_directory>]
 ```
 
 Example:
 ```
-python llm_clean_data.py ./tests/data/ondri_beam_biomarkers.xlsx --columns SEX MOCA_TOTAL AB40 AB42 PTAU181 --output_dir ./tests/cleaned_outputs
+llm_clean_data ./tests/data/ondri_beam_biomarkers.xlsx --columns SEX MOCA_TOTAL AB40 AB42 PTAU181 --output_dir ./tests/cleaned_outputs
 ```
 
-Example output:
+Example output (in .txt file) along with the cleaned data file in .xlsx format:
 ```
 Identified placeholder strings:
 ['MISSING', 'nan', 'M_OTHER', 'M_PI', 'BLOD']
